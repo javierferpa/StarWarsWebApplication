@@ -1,0 +1,20 @@
+<mat-card>
+  <mat-toolbar color="primary">People</mat-toolbar>
+
+  <sw-search-bar (search)="onSearch($event)"></sw-search-bar>
+
+  <sw-data-table
+    [displayedColumns]="displayed"
+    [data]="data"
+    [total]="total"
+    (sortChange)="onSort($event)"
+    (pageChange)="onPage($event)">
+  </sw-data-table>
+
+  <mat-progress-spinner
+    *ngIf="loading"
+    class="overlay"
+    mode="indeterminate"
+    diameter="48">
+  </mat-progress-spinner>
+</mat-card>

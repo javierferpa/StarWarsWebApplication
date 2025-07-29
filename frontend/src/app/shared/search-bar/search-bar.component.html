@@ -1,0 +1,7 @@
+<mat-form-field appearance="outline" class="full">
+  <mat-label>Search</mat-label>
+  <input matInput [formControl]="ctrl" placeholder="Type to filter"/>
+  <button matSuffix mat-icon-button *ngIf="ctrl.value" (click)="ctrl.setValue('')">
+    <mat-icon>close</mat-icon>
+  </button>
+</mat-form-field>

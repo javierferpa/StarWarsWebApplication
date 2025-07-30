@@ -1,56 +1,57 @@
-import { Component, OnInit }        from '@angular/core';
-import { CommonModule }             from '@angular/common';
-import { MatTableModule }           from '@angular/material/table';
-import { MatPaginatorModule }       from '@angular/material/paginator';
-import { MatSortModule }            from '@angular/material/sort';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { SearchBarComponent }       from '../../shared/search-bar/search-bar.component';
-import { PlanetsService }           from '../../core/services/planets.service';
-import { Planet }                   from '../../core/models/planet.model';
-import { PageDto }                  from '../../core/models/page.model';
-import {DataTableComponent} from '../../shared/data-table/data-table.component';
-import {MatToolbar} from '@angular/material/toolbar';
+/* src/app/features/planets/planet-list.component.ts */
+import { Component, OnInit } from '@angular/core';
+import { PlanetsService }     from '../../core/services/planets.service';
+import { Planet }             from '../../core/models/planet.model';
+import { PageDto }            from '../../core/models/page.model';
 import {MatCard} from '@angular/material/card';
+import {MatToolbar} from '@angular/material/toolbar';
+import {SearchBarComponent} from '../../shared/search-bar/search-bar.component';
+import {DataTableComponent} from '../../shared/data-table/data-table.component';
+import {MatCell, MatCellDef, MatColumnDef, MatHeaderCell, MatHeaderCellDef} from '@angular/material/table';
+import {DatePipe} from '@angular/common';
+import {MatProgressSpinner} from '@angular/material/progress-spinner';
 
 @Component({
-  selector:    'sw-planet-list',
-  standalone:  true,
+  selector: 'sw-planet-list',
+  templateUrl: './planet-list.component.html',
   imports: [
-    CommonModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatProgressSpinnerModule,
+    MatCard,
+    MatToolbar,
     SearchBarComponent,
     DataTableComponent,
-    MatToolbar,
-    MatCard
+    MatColumnDef,
+    MatCell,
+    MatHeaderCell,
+    MatHeaderCellDef,
+    MatCellDef,
+    DatePipe,
+    MatProgressSpinner
   ],
-  templateUrl: './planet-list.component.html',
-  styleUrls:   ['./planet-list.component.scss']
+  styleUrls: ['./planet-list.component.scss']
 })
 export class PlanetListComponent implements OnInit {
   displayed = ['name','population','created'];
-  data:      Planet[] = [];
-  total    = 0;
-  loading  = false;
+  data: Planet[] = [];
+  total = 0;
+
+  pageSize = 15;
 
   query = {
     page:   0,
-    size:   15,
+    size:   this.pageSize,
     sort:   'name',
-    dir:    'asc' as 'asc' | 'desc',
+    dir:    'asc' as 'asc'|'desc',
     search: ''
   };
 
-  constructor(private planetsSvc: PlanetsService) {}
+  loading = false;
 
-  ngOnInit() {
-    this.load();
-  }
+  constructor(private planetsSvc: PlanetsService){}
+
+  ngOnInit() { this.load(); }
 
   onSearch(txt: string) {
-    this.query.page   = 0;
+    this.query.page = 0;
     this.query.search = txt;
     this.load();
   }
@@ -62,15 +63,17 @@ export class PlanetListComponent implements OnInit {
     this.load();
   }
 
-  onPage(e: { pageIndex:number }) {
+  onPage(e: { pageIndex:number; pageSize:number }) {
     this.query.page = e.pageIndex;
+    this.query.size = e.pageSize;
+    this.pageSize   = e.pageSize;
     this.load();
   }
 
   private load() {
     this.loading = true;
     this.planetsSvc.list(this.query).subscribe({
-      next:   (page:PageDto<Planet>) => {
+      next: (page: PageDto<Planet>) => {
         this.data    = page.items;
         this.total   = page.total;
         this.loading = false;

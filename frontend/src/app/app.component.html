@@ -1,8 +1,19 @@
-<mat-toolbar color="primary">
-  Star Wars Explorer
+<mat-toolbar color="primary" class="main-toolbar">
+  <span class="title">StarWars&nbsp;DB</span>
+
   <span class="spacer"></span>
-  <a mat-button routerLink="/people">People</a>
-  <a mat-button routerLink="/planets">Planets</a>
+
+  <!-- navigation -->
+  <button mat-button routerLink="/people"  routerLinkActive="active">People</button>
+  <button mat-button routerLink="/planets" routerLinkActive="active">Planets</button>
+
+  <!-- dark‑mode switch -->
+  <mat-slide-toggle class="theme-toggle"
+                    [checked]="dark"
+                    (change)="toggleDark()">
+    Dark&nbsp;mode
+  </mat-slide-toggle>
 </mat-toolbar>
 
+<!-- routed pages render here -->
 <router-outlet></router-outlet>

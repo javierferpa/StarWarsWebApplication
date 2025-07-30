@@ -1,0 +1,16 @@
+/* people-list.component.scss */
+.list-card { margin: 16px; }
+
+.search-field {
+  width: 260px;
+  margin-bottom: 8px;
+}
+
+table {
+  width: 100%;
+
+  /* zebra rows – very light gray */
+  &.zebra tr:nth-child(even) td {
+    background: #f6f6f6;
+  }
+}

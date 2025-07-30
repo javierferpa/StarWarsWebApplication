@@ -1,42 +1,38 @@
-/* src/styles.scss ------------------------------------------------------- */
-@use '@angular/material' as mat;
-@import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
+/* src/styles.scss – Angular 17 / Material 17 */
 
-/* 1.  núcleo de Material (ripple, density, mixins…) */
+@use '@angular/material' as mat;
+
 @include mat.core();
 
-/* 2.  paletas (“legacy”) */
-$primary   : mat.define-palette(mat.$blue-grey, 600);
-$accent    : mat.define-palette(mat.$amber);
-$warn      : mat.define-palette(mat.$deep-orange);
+/* palettes (M3 variables) */
+$primary   : mat.m3-blue-grey;
+$accent    : mat.m3-amber;
+$warn      : mat.m3-deep-orange;
 
-/* 3.  tipografía (la función sí existe en v20.1.x) */
-$typography: mat.define-typography-config(
-  $font-family: 'Orbitron, sans-serif'
-);
+/* Star‑Wars dark theme */
+$starwars-dark: mat.m3-define-dark-theme((
+  color: (
+    primary : $primary,
+    secondary: $accent,
+    error   : $warn,
+  ),
+  typography: mat.m3-define-typography((
+    font-family: 'Orbitron, sans-serif',
+  )),
+));
 
-/* 4.  tema oscuro usando la API clásica ------------------------------- */
-$dark-theme: mat.dark-theme(
-    $primary,
-    $accent,
-    $warn,
-    $typography
-);
+/* default (light) theme */
+$starwars-light: mat.m3-define-light-theme((
+  color: (
+    primary : $primary,
+    secondary: $accent,
+  ),
+));
 
-/* 5.  tema claro “por defecto” (opcional)                               */
-$light-theme: mat.light-theme(
-    $primary,
-    $accent,
-    $warn,
-    $typography
-);
+/* apply light everywhere */
+@include mat.m3-apply-theme($starwars-light);
 
-/* 6.  aplicar tema claro globalmente  */
-@include mat.all-component-themes($light-theme);
-
-/* 7.  aplicar tema oscuro sólo cuando el <body> tenga .dark-mode  */
-.dark-mode {
-  @include mat.all-component-colors($dark-theme);
-  background-color: #000;  /* fondo general */
-  color: #ffd700;          /* acento dorado tipo Star Wars */
+/* toggle dark mode with a body class */
+body.dark-mode {
+  @include mat.m3-apply-theme($starwars-dark);
 }

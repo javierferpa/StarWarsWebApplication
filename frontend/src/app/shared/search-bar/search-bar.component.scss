@@ -1,0 +1,24 @@
+:host {
+  display: block;
+  margin-bottom: 16px;
+}
+
+:host-context(.dark-mode) .mat-form-field {
+  color: #FFD700;
+}
+
+:host-context(.dark-mode) .mat-form-field-label {
+  color: #FFD700;
+}
+
+:host-context(.dark-mode) .mat-input-element {
+  color: #FFD700;
+}
+
+:host-context(.dark-mode) .mat-form-field-underline {
+  background-color: rgba(255, 215, 0, 0.3);
+}
+
+:host-context(.dark-mode) .mat-form-field-ripple {
+  background-color: #FFD700;
+}

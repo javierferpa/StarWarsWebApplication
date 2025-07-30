@@ -22,11 +22,11 @@ import { MatIconModule }         from '@angular/material/icon';
 export class AppComponent {
 
   /** keeps the current mode */
-  dark = false;
+  darkMode = false;
 
   /** toggles a CSS class on <body> */
-  toggleDark(): void {
-    this.dark = !this.dark;
-    document.body.classList.toggle('dark-theme', this.dark);
+  toggleDarkMode(): void {
+    this.darkMode = !this.darkMode;
+    document.body.classList.toggle('dark-mode', this.darkMode);
   }
 }

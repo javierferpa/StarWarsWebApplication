@@ -51,9 +51,8 @@ export class DataTableComponent<T>
   readonly dataSource = new MatTableDataSource<T>();
 
   ngAfterViewInit(): void {
-    // enlazamos paginador y sort una vez
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort      = this.sort;
+    // No asignar paginador ni sort al dataSource para paginación de servidor
+    // Solo sincronizar el label del paginador
     this._syncPaginator();
   }
 

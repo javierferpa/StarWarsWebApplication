@@ -1,16 +1,22 @@
-/* people-list.component.scss */
-.list-card { margin: 16px; }
-
-.search-field {
-  width: 260px;
-  margin-bottom: 8px;
+:host {
+  display: block;
+  padding: 16px;
+  font-family: 'Orbitron', sans-serif;
+  background-color: #FFFFFF;
+  color: #333333;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-table {
-  width: 100%;
+:host-context(.dark-mode) {
+  background-color: #000000;
+  color: #FFD700;
+  background-image: url('/assets/star-wars-bg.jpg');
+  background-size: cover;
+  background-position: center;
+}
 
-  /* zebra rows – very light gray */
-  &.zebra tr:nth-child(even) td {
-    background: #f6f6f6;
-  }
+:host-context(.dark-mode) .mat-card,
+:host-context(.dark-mode) .mat-toolbar {
+  background-color: #121212;
+  color: #FFD700;
 }

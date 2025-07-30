@@ -1,29 +1,42 @@
+/* src/styles.scss ------------------------------------------------------- */
 @use '@angular/material' as mat;
+@import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
 
+/* 1.  núcleo de Material (ripple, density, mixins…) */
 @include mat.core();
 
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
-@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+/* 2.  paletas (“legacy”) */
+$primary   : mat.define-palette(mat.$blue-grey, 600);
+$accent    : mat.define-palette(mat.$amber);
+$warn      : mat.define-palette(mat.$deep-orange);
 
-// Define your theme
-html {
-  @include mat.theme((
-    color: (
-      primary:   mat.$azure-palette,
-      secondary: mat.$blue-palette,
-    ),
-    typography: Roboto,
-    density:    0,
-  ));
+/* 3.  tipografía (la función sí existe en v20.1.x) */
+$typography: mat.define-typography-config(
+  $font-family: 'Orbitron, sans-serif'
+);
 
-  color-scheme: light;
-  background-color: var(--mat-sys-surface);
-  color:            var(--mat-sys-on-surface);
-  font:             var(--mat-sys-body-medium);
-}
+/* 4.  tema oscuro usando la API clásica ------------------------------- */
+$dark-theme: mat.dark-theme(
+    $primary,
+    $accent,
+    $warn,
+    $typography
+);
 
-html, body {
-  height: 100%;
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+/* 5.  tema claro “por defecto” (opcional)                               */
+$light-theme: mat.light-theme(
+    $primary,
+    $accent,
+    $warn,
+    $typography
+);
+
+/* 6.  aplicar tema claro globalmente  */
+@include mat.all-component-themes($light-theme);
+
+/* 7.  aplicar tema oscuro sólo cuando el <body> tenga .dark-mode  */
+.dark-mode {
+  @include mat.all-component-colors($dark-theme);
+  background-color: #000;  /* fondo general */
+  color: #ffd700;          /* acento dorado tipo Star Wars */
 }

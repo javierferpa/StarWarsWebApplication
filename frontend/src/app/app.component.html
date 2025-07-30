@@ -6,14 +6,14 @@
   <!-- navigation -->
   <button mat-button routerLink="/people"  routerLinkActive="active">People</button>
   <button mat-button routerLink="/planets" routerLinkActive="active">Planets</button>
-
-  <!-- dark‑mode switch -->
-  <mat-slide-toggle class="theme-toggle"
-                    [checked]="dark"
-                    (change)="toggleDark()">
-    Dark&nbsp;mode
-  </mat-slide-toggle>
+  
+  <!-- Dark mode toggle -->
+  <button mat-button (click)="toggleDarkMode()">
+    {{ darkMode ? 'Modo Claro' : 'Modo Oscuro' }}
+  </button>
 </mat-toolbar>
 
-<!-- routed pages render here -->
-<router-outlet></router-outlet>
+<div class="app-container">
+  <!-- routed pages render here -->
+  <router-outlet></router-outlet>
+</div>

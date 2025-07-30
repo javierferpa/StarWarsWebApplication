@@ -1,38 +1,28 @@
-/* src/styles.scss – Angular 17 / Material 17 */
-
 @use '@angular/material' as mat;
 
 @include mat.core();
 
-/* palettes (M3 variables) */
-$primary   : mat.m3-blue-grey;
-$accent    : mat.m3-amber;
-$warn      : mat.m3-deep-orange;
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
-/* Star‑Wars dark theme */
-$starwars-dark: mat.m3-define-dark-theme((
-  color: (
-    primary : $primary,
-    secondary: $accent,
-    error   : $warn,
-  ),
-  typography: mat.m3-define-typography((
-    font-family: 'Orbitron, sans-serif',
-  )),
-));
+html {
+  @include mat.theme((
+    color: (
+      primary:   mat.$azure-palette,
+      secondary: mat.$blue-palette,
+    ),
+    typography: Roboto,
+    density:    0,
+  ));
 
-/* default (light) theme */
-$starwars-light: mat.m3-define-light-theme((
-  color: (
-    primary : $primary,
-    secondary: $accent,
-  ),
-));
+  color-scheme: light;
+  background-color: var(--mat-sys-surface);
+  color:            var(--mat-sys-on-surface);
+  font:             var(--mat-sys-body-medium);
+}
 
-/* apply light everywhere */
-@include mat.m3-apply-theme($starwars-light);
-
-/* toggle dark mode with a body class */
-body.dark-mode {
-  @include mat.m3-apply-theme($starwars-dark);
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }

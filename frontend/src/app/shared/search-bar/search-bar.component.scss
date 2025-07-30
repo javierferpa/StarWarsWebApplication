@@ -1,8 +1,68 @@
 :host {
   display: block;
   margin-bottom: 16px;
+
+  .search-bar {
+    width: 100%;
+    font-family: 'Orbitron', sans-serif;
+
+    .mat-mdc-form-field-flex {
+      align-items: center;
+    }
+
+    .mat-icon {
+      color: #FFD700;
+      margin-right: 8px;
+    }
+
+    &.mat-form-field-appearance-outline {
+      .mat-mdc-form-field-outline {
+        background: rgba(11, 20, 38, 0.8);
+        border-radius: 8px;
+        border-color: rgba(255, 215, 0, 0.5) !important;
+      }
+
+      .mat-mdc-form-field-outline-thick {
+        border-color: #FFD700 !important;
+        border-width: 1px !important;
+      }
+
+      &.mat-focused .mat-mdc-form-field-outline-thick {
+        border-color: #4A9EFF !important;
+        box-shadow: 0 0 10px rgba(74, 158, 255, 0.3);
+      }
+    }
+
+    .mat-mdc-form-field-label {
+      color: #FFD700 !important;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 500;
+    }
+
+    .mat-mdc-input-element {
+      color: #FFFFFF !important;
+      font-family: 'Orbitron', sans-serif;
+      background: transparent;
+
+      &::placeholder {
+        color: rgba(255, 215, 0, 0.7) !important;
+      }
+    }
+
+    .mat-mdc-form-field-icon-suffix {
+      .mat-mdc-icon-button {
+        color: #FFD700 !important;
+
+        &:hover {
+          background-color: rgba(255, 215, 0, 0.1) !important;
+          color: #4A9EFF !important;
+        }
+      }
+    }
+  }
 }
 
+// Remove redundant dark mode styles since we're always dark
 :host-context(.dark-mode) .mat-form-field {
   color: #FFD700;
 }

@@ -2,27 +2,118 @@
 
 @include mat.core();
 
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+// Define Star Wars color palette
+$sw-dark-blue: #0B1426;
+$sw-yellow: #FFD700;
+$sw-light-blue: #4A9EFF;
+$sw-red: #FF4444;
+$sw-dark-gray: #1A1A1A;
+$sw-light-gray: #2A2A2A;
+
+// Create custom Star Wars palette
+$star-wars-primary: (
+  50: #E3F2FD,
+  100: #BBDEFB,
+  200: #90CAF9,
+  300: #64B5F6,
+  400: #42A5F5,
+  500: $sw-light-blue,
+  600: #1E88E5,
+  700: #1976D2,
+  800: #1565C0,
+  900: #0D47A1,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #FFFFFF,
+    600: #FFFFFF,
+    700: #FFFFFF,
+    800: #FFFFFF,
+    900: #FFFFFF,
+  )
+);
+
+$star-wars-accent: (
+  50: #FFFDE7,
+  100: #FFF9C4,
+  200: #FFF59D,
+  300: #FFF176,
+  400: #FFEE58,
+  500: $sw-yellow,
+  600: #FFC107,
+  700: #FF8F00,
+  800: #FF6F00,
+  900: #E65100,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #000000,
+    600: #000000,
+    700: #000000,
+    800: #FFFFFF,
+    900: #FFFFFF,
+  )
+);
 
 html {
   @include mat.theme((
     color: (
-      primary:   mat.$azure-palette,
-      secondary: mat.$blue-palette,
+      primary: $star-wars-primary,
+      secondary: $star-wars-accent,
     ),
-    typography: Roboto,
-    density:    0,
+    density: 0,
   ));
 
-  color-scheme: light;
-  background-color: var(--mat-sys-surface);
-  color:            var(--mat-sys-on-surface);
-  font:             var(--mat-sys-body-medium);
+  color-scheme: dark;
 }
 
 html, body {
   height: 100%;
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  padding: 0;
+  font-family: 'Orbitron', 'Roboto', sans-serif;
+  background: linear-gradient(135deg, $sw-dark-blue 0%, #000000 50%, $sw-dark-gray 100%) fixed;
+  color: $sw-yellow;
+  min-height: 100vh;
+}
+
+// Global Star Wars styling
+* {
+  box-sizing: border-box;
+}
+
+// Add subtle star field animation
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    radial-gradient(2px 2px at 20px 30px, #eee, transparent),
+    radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+    radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.6), transparent),
+    radial-gradient(2px 2px at 160px 30px, #fff, transparent);
+  background-repeat: repeat;
+  background-size: 200px 100px;
+  animation: sparkle 20s linear infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes sparkle {
+  from { transform: translateY(0px); }
+  to { transform: translateY(-100px); }
 }

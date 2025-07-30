@@ -32,13 +32,13 @@ import {MatProgressSpinner} from '@angular/material/progress-spinner';
 export class PeopleListComponent implements OnInit {
 
   displayed = ['name','height','mass','gender','created'];
+  sortable = ['name','height','mass', 'created'];
   data: Person[] = [];
   total = 0;
 
-  // ** exponemos pageSize **
   pageSize = 15;
 
-  // query interna
+  // Internal query state
   query = {
     page:   0,
     size:   this.pageSize,
@@ -60,17 +60,18 @@ export class PeopleListComponent implements OnInit {
   }
 
   onSort(e: { active:string; direction:string }) {
-    if (!e.direction) return;
+    if (!e.direction) {
+      return;
+    }
     this.query.sort = e.active;
     this.query.dir = e.direction as 'asc'|'desc';
     this.load();
   }
 
-  // ** manejamos pageIndex y pageSize del PageEvent **
   onPage(e: { pageIndex: number; pageSize: number }) {
     this.query.page = e.pageIndex;
     this.query.size = e.pageSize;
-    this.pageSize   = e.pageSize;       // actualizamos la propiedad para el paginador
+    this.pageSize   = e.pageSize; // Update the pageSize for the paginator
     this.load();
   }
 

@@ -10,6 +10,7 @@ import {DataTableComponent} from '../../shared/data-table/data-table.component';
 import {MatCell, MatCellDef, MatColumnDef, MatHeaderCell, MatHeaderCellDef} from '@angular/material/table';
 import {DatePipe} from '@angular/common';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'sw-planet-list',
@@ -25,12 +26,14 @@ import {MatProgressSpinner} from '@angular/material/progress-spinner';
     MatHeaderCellDef,
     MatCellDef,
     DatePipe,
-    MatProgressSpinner
+    MatProgressSpinner,
+    DecimalPipe
   ],
   styleUrls: ['./planet-list.component.scss']
 })
 export class PlanetListComponent implements OnInit {
   displayed = ['name','population','created'];
+  sortable = ['name','population', 'created'];
   data: Planet[] = [];
   total = 0;
 

@@ -2,11 +2,82 @@
   display: block;
   padding: 16px;
   font-family: 'Orbitron', sans-serif;
-  background-color: #FFFFFF;
-  color: #333333;
-  transition: background-color 0.3s, color 0.3s;
+  min-height: calc(100vh - 64px - 32px);
 }
 
+.list-card {
+  background: rgba(11, 20, 38, 0.95) !important;
+  border-radius: 16px;
+  border: 2px solid rgba(255, 215, 0, 0.4);
+  box-shadow: 
+    0 16px 40px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 rgba(255, 215, 0, 0.2),
+    0 0 30px rgba(74, 158, 255, 0.1);
+  backdrop-filter: blur(15px);
+  overflow: hidden;
+  position: relative;
+  
+  // Add subtle animated border
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 16px;
+    padding: 2px;
+    background: linear-gradient(45deg, #FFD700, #4A9EFF, #FFD700);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    animation: borderGlow 3s linear infinite;
+    pointer-events: none;
+  }
+  
+  .mat-mdc-card-header {
+    background: rgba(26, 35, 126, 0.8);
+    margin: -16px -16px 16px -16px;
+    
+    .mat-toolbar {
+      background: linear-gradient(135deg, #1A237E 0%, #0B1426 100%) !important;
+      color: #FFD700 !important;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border-bottom: 2px solid #FFD700;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      position: relative;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #4A9EFF, transparent);
+        animation: scan 2s linear infinite;
+      }
+    }
+  }
+  
+  .overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    
+    .mat-mdc-progress-spinner {
+      --mdc-circular-progress-active-indicator-color: #FFD700;
+      filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6));
+    }
+  }
+}
+
+// Remove old conditional dark mode styles since we're always dark
 :host-context(.dark-mode) {
   background-color: #000000;
   color: #FFD700;
@@ -19,4 +90,14 @@
 :host-context(.dark-mode) .mat-toolbar {
   background-color: #121212;
   color: #FFD700;
+}
+
+@keyframes borderGlow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes scan {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }

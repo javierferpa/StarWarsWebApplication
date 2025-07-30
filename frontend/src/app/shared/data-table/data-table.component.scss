@@ -2,11 +2,104 @@
   display: block;
   padding: 16px;
   font-family: 'Orbitron', sans-serif;
-  background-color: #FFFFFF;
-  color: #333333;
-  transition: background-color 0.3s, color 0.3s;
 }
 
+.table-wrapper {
+  background: rgba(11, 20, 38, 0.9);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 215, 0, 0.1);
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  
+  .mat-mdc-table {
+    background: transparent !important;
+    
+    .mat-mdc-header-row {
+      background: rgba(26, 35, 126, 0.8) !important;
+      border-bottom: 2px solid #FFD700;
+    }
+    
+    .mat-mdc-header-cell {
+      color: #FFD700 !important;
+      font-weight: 700;
+      font-family: 'Orbitron', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-bottom: none !important;
+      position: relative;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #4A9EFF, transparent);
+      }
+      
+      .mat-sort-header-arrow {
+        color: #FFD700 !important;
+      }
+    }
+    
+    .mat-mdc-row {
+      background: rgba(26, 26, 26, 0.6) !important;
+      border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+      transition: all 0.3s ease;
+      
+      &:hover {
+        background: rgba(74, 158, 255, 0.1) !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(74, 158, 255, 0.2);
+      }
+      
+      &:nth-child(even) {
+        background: rgba(42, 42, 42, 0.4) !important;
+      }
+    }
+    
+    .mat-mdc-cell {
+      color: #FFFFFF !important;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 400;
+      border-bottom: none !important;
+      padding: 12px 16px;
+      
+      // Add subtle glow effect to text
+      text-shadow: 0 0 4px rgba(255, 255, 255, 0.3);
+    }
+  }
+  
+  .mat-mdc-paginator {
+    background: rgba(11, 20, 38, 0.9) !important;
+    color: #FFD700 !important;
+    border-top: 1px solid rgba(255, 215, 0, 0.3);
+    font-family: 'Orbitron', sans-serif;
+    
+    .mat-mdc-select-value,
+    .mat-mdc-paginator-range-label {
+      color: #FFD700 !important;
+    }
+    
+    .mat-mdc-icon-button {
+      color: #FFD700 !important;
+      
+      &:hover {
+        background-color: rgba(255, 215, 0, 0.1) !important;
+      }
+      
+      &[disabled] {
+        color: rgba(255, 215, 0, 0.3) !important;
+      }
+    }
+  }
+}
+
+// Remove old dark mode styles since we're always dark now
 :host-context(.dark-mode) {
   background-color: #000000;
   color: #FFD700;

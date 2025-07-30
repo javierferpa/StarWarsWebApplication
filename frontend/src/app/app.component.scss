@@ -1,6 +1,45 @@
 .main-toolbar {
-  .title  { font-weight: 600; }
+  background: linear-gradient(90deg, #0B1426 0%, #1A237E 50%, #0B1426 100%) !important;
+  border-bottom: 2px solid #FFD700;
+  position: relative;
+  
+  .title { 
+    font-weight: 900; 
+    font-size: 1.5rem;
+    color: #FFD700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+    letter-spacing: 2px;
+    font-family: 'Orbitron', sans-serif;
+  }
+  
   .spacer { flex: 1 1 auto; }
 
-  .active { font-weight: 700; }
+  button {
+    color: #FFFFFF !important;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 500;
+    margin: 0 8px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    position: relative;
+    
+    &:hover {
+      background-color: rgba(255, 215, 0, 0.1);
+      color: #FFD700 !important;
+      transform: translateY(-2px);
+    }
+    
+    &.active {
+      font-weight: 700;
+      color: #FFD700 !important;
+      background-color: rgba(255, 215, 0, 0.2);
+    }
+  }
+}
+
+.app-container {
+  min-height: calc(100vh - 64px);
+  background: transparent;
+  position: relative;
 }

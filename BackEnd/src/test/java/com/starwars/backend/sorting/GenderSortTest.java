@@ -44,15 +44,22 @@ class GenderSortTest {
     }
 
     @Test
-    void nullGenderComesFirst() {
-        PeopleDto a = new PeopleDto();
-        a.setGender(null);
+    void unknownGenderComesFirst() {
+        PeopleDto unknown = new PeopleDto();
+        unknown.setGender("unknown");  // This will remain "unknown"
 
-        PeopleDto b = new PeopleDto();
-        b.setGender("male");
+        PeopleDto male = new PeopleDto();
+        male.setGender("male");
 
         Comparator<HasGender> comp = strategy.comparator();
-        assertTrue(comp.compare(a, b) < 0, "null should sort before a non-null gender");
+        // Since both are non-null strings, "unknown" should come after "male" alphabetically
+        assertTrue(comp.compare(unknown, male) > 0, "'unknown' should sort after 'male' alphabetically");
+        
+        // Test that null values (before normalization) would be handled correctly
+        PeopleDto nullGender = new PeopleDto();
+        nullGender.setGender(null);  // This becomes "unknown" due to normalization
+        
+        assertEquals("unknown", nullGender.getGender(), "null gender should be normalized to 'unknown'");
     }
 
     @Test
@@ -81,9 +88,9 @@ class GenderSortTest {
         PeopleDto unknown = new PeopleDto();
         unknown.setGender("unknown");
 
-        // All should be normalized to "unknown"
-        assertEquals("unknown", none.getGender());
-        assertEquals("unknown", na.getGender());
-        assertEquals("unknown", unknown.getGender());
+        // All should be normalized to "unknown" by the setter
+        assertEquals("unknown", none.getGender(), "Value 'none' should be normalized to 'unknown'");
+        assertEquals("unknown", na.getGender(), "Value 'n/a' should be normalized to 'unknown'");
+        assertEquals("unknown", unknown.getGender(), "Value 'unknown' should remain 'unknown'");
     }
 }

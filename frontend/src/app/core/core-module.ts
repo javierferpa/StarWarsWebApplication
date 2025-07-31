@@ -9,8 +9,8 @@ import { HttpErrorInterceptor } from './interceptors/http-error.interceptor';
   ]
 })
 export class CoreModule {
-  /** evita importar Core dos veces */
+  /** Prevent CoreModule from being imported twice */
   constructor(@Optional() @SkipSelf() parent?: CoreModule) {
-    if (parent) throw new Error('CoreModule is already loaded 🤯');
+    if (parent) throw new Error('CoreModule is already loaded. Import it only once in AppModule.');
   }
 }

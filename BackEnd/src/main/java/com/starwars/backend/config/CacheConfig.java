@@ -11,30 +11,23 @@ import java.time.Duration;
 
 /**
  * Central cache configuration for the application.
- * - I use Caffeine because it's superfast and perfect for in-memory caching with Spring.
- * - By enabling @EnableCaching, Spring auto-wires the cache infrastructure and lets me
- *   use @Cacheable annotations throughout the codebase.
+ * Uses Caffeine for high-performance in-memory caching with Spring Boot.
  */
 @EnableCaching
 @Configuration
 public class CacheConfig {
 
-
     @Bean
     public Caffeine<Object, Object> caffeineConfig() {
-        // Caffeine builder is immutable - create once and share across instances.
         return Caffeine.newBuilder()
                 .expireAfterWrite(Duration.ofMinutes(10))
                 .maximumSize(1000);
     }
 
-
     @Bean
     public CacheManager cacheManager(Caffeine<Object, Object> caffeine) {
-        // CaffeineCacheManager is a Spring abstraction that hides most of the boilerplate.
         CaffeineCacheManager manager = new CaffeineCacheManager("peopleAll", "planetsAll");
         manager.setCaffeine(caffeine);
-        // No explicit logging here—Spring Boot logs cache creation on startup anyway.
         return manager;
     }
 }

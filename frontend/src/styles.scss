@@ -6,7 +6,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
-// Define Star Wars color palette
+// Star Wars color palette
 $sw-dark-blue: #0B1426;
 $sw-yellow: #FFD700;
 $sw-light-blue: #4A9EFF;
@@ -14,7 +14,7 @@ $sw-red: #FF4444;
 $sw-dark-gray: #1A1A1A;
 $sw-light-gray: #2A2A2A;
 
-// Create custom Star Wars palette
+// Custom Material Design theme colors
 $star-wars-primary: (
   50: #E3F2FD,
   100: #BBDEFB,
@@ -87,19 +87,19 @@ html, body {
   min-height: 100vh;
 }
 
-// Global Star Wars styling
+// Global styling
 * {
   box-sizing: border-box;
 }
 
-// Responsive container styling - more compact
+// Container styling
 .container {
   max-width: clamp(18rem, 75vw, 55rem);
   margin: 0 auto;
   padding: 0 clamp(0.75rem, 3vw, 1.5rem);
 }
 
-// Enhanced Star Wars table container - optimized for viewport fit
+// Table container
 .mat-mdc-table {
   width: 100%;
   max-width: clamp(18rem, 55vw, 38rem);
@@ -166,7 +166,6 @@ html, body {
         border-right: none;
       }
       
-      // Individual cell hover effect
       &:hover {
         color: $sw-yellow !important;
         text-shadow: 0 0 0.5rem rgba(255, 215, 0, 0.8) !important;
@@ -180,7 +179,7 @@ html, body {
   }
 }
 
-// Star Wars content wrapper with enhanced styling - more compact
+// Content wrapper
 .sw-content-wrapper {
   max-width: clamp(18rem, 70vw, 48rem);
   margin: clamp(0.25rem, 1vw, 0.5rem) auto;
@@ -207,7 +206,7 @@ html, body {
   }
 }
 
-// Enhanced button styling
+// Button styling
 .mat-mdc-button, .mat-mdc-raised-button {
   border-radius: clamp(0.25rem, 1vw, 0.5rem) !important;
   font-family: 'Orbitron', sans-serif !important;
@@ -223,7 +222,7 @@ html, body {
   }
 }
 
-// Enhanced search bar styling - full width and properly aligned
+// Search bar styling
 .mat-mdc-form-field {
   width: 100% !important;
   max-width: 100% !important;
@@ -311,7 +310,7 @@ html, body {
   }
 }
 
-// Responsive paginator styling
+// Paginator styling
 .mat-mdc-paginator {
   background: rgba(11, 20, 38, 0.8) !important;
   color: rgba(255, 255, 255, 0.9) !important;
@@ -331,7 +330,7 @@ html, body {
   }
 }
 
-// Enhanced loading and error states
+// Loading and error states
 .loading-container, .error-container {
   display: flex;
   justify-content: center;
@@ -343,7 +342,7 @@ html, body {
   text-shadow: 0 0 1rem rgba(255, 215, 0, 0.8);
 }
 
-// Responsive card-like containers
+// Card containers
 .sw-card {
   background: linear-gradient(135deg, rgba(11, 20, 38, 0.9), rgba(26, 26, 26, 0.7));
   border: 0.125rem solid rgba(74, 158, 255, 0.4);
@@ -365,7 +364,7 @@ html, body {
   }
 }
 
-// Responsive navigation/toolbar styling
+// Navigation styling
 .mat-toolbar {
   background: linear-gradient(135deg, rgba(11, 20, 38, 0.9), rgba(26, 26, 26, 0.8)) !important;
   color: $sw-yellow !important;
@@ -378,7 +377,7 @@ html, body {
   }
 }
 
-// Enhanced scroll behavior - more compact
+// Scroll behavior
 .mat-mdc-table-container {
   max-height: clamp(16rem, 40vh, 24rem);
   overflow-y: auto;

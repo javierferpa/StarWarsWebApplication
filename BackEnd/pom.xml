@@ -12,20 +12,7 @@
     <artifactId>BackEnd</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>BackEnd</name>
-    <description>BackEnd</description>
-    <url/>
-    <licenses>
-        <license/>
-    </licenses>
-    <developers>
-        <developer/>
-    </developers>
-    <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
-    </scm>
+    <description>Star Wars API Backend</description>
     <properties>
         <java.version>17</java.version>
     </properties>

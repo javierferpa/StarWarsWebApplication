@@ -2,12 +2,14 @@
 
 # For Railway deployment, use the backend service URL
 # For local development, use the default backend URL
-if [ -n "$RAILWAY_ENVIRONMENT" ]; then
-    # Railway environment - use the backend service URL
-    BACKEND_URL=${BACKEND_URL:-"https://starwars-backend-production.up.railway.app"}
+if [ -n "$RAILWAY_ENVIRONMENT" ] || [ -n "$RAILWAY_SERVICE_NAME" ] || [ -n "$RAILWAY_PROJECT_ID" ]; then
+    # Railway environment - use private networking (internal URL with port)
+    BACKEND_URL=${BACKEND_URL:-"http://starwars-backend.railway.internal:8080"}
+    echo "Railway environment detected - using private networking"
 else
-    # Local development
+    # Local development - use docker internal networking
     BACKEND_URL=${BACKEND_URL:-"http://backend:8080"}
+    echo "Local development environment"
 fi
 
 echo "Using backend URL: $BACKEND_URL"

@@ -6,6 +6,7 @@ services:
     environment:
       - TZ=UTC
       - SPRING_PROFILES_ACTIVE=production
+      - SERVER_PORT=8080
     ports:
       - "8080:8080"
     healthcheck:
@@ -22,6 +23,6 @@ services:
     depends_on:
       - starwars-backend
     environment:
-      - BACKEND_URL=https://starwars-backend-production.up.railway.app
+      - BACKEND_URL=http://starwars-backend.railway.internal:8080
     ports:
       - "80:80"

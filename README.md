@@ -6,8 +6,9 @@ A full-stack web application that displays Star Wars data from the SWAPI (Star W
 [![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://starwars-app-production.up.railway.app)
 
 ## Live Demo
-- **Application**: [https://starwars-app-production.up.railway.app](https://starwars-app-production.up.railway.app)
+- **Application**: [https://starwars-frontend-production.up.railway.app](https://starwars-frontend-production.up.railway.app)
 - **API Health Check**: [https://starwars-backend-production.up.railway.app/actuator/health](https://starwars-backend-production.up.railway.app/actuator/health)
+- **API Endpoints**: [https://starwars-backend-production.up.railway.app/api/people](https://starwars-backend-production.up.railway.app/api/people)
 
 ## Features
 
@@ -86,12 +87,14 @@ npm start
 cd BackEnd
 ./mvnw test
 ```
+**Expected Results**: 30 tests passing including unit tests for controllers, services, and sorting strategies.
 
 #### Frontend Tests
 ```bash
 cd frontend
 npm test
 ```
+**Expected Results**: 7 tests passing with 35%+ code coverage for components and services.
 
 ## API Endpoints
 
@@ -120,6 +123,44 @@ The application follows a microservices architecture with clean separation of co
 - **Reactive Programming**: Non-blocking HTTP calls with WebClient
 - **Caching**: Caffeine-based caching for improved performance
 - **Error Resilience**: Comprehensive error handling with fallback mechanisms
+
+## Railway Deployment
+
+### Quick Railway Setup
+
+1. **Import via Docker Compose** (Recommended):
+   ```bash
+   # Upload railway-compose.yml to Railway dashboard
+   # Railway will automatically create both services
+   ```
+
+2. **Manual Service Creation**:
+   - Create two services in Railway: `starwars-backend` and `starwars-frontend`
+   - Set Root Directories: `BackEnd/` and `frontend/` respectively
+   - Railway will auto-detect Dockerfiles in each directory
+
+### Railway Configuration
+
+**Backend Service**:
+- Root Directory: `BackEnd/`
+- Port: 8080 (auto-detected)
+- Environment: `SPRING_PROFILES_ACTIVE=production`
+- Private URL: `starwars-backend.railway.internal:8080`
+- Public URL: `https://starwars-backend-production.up.railway.app`
+
+**Frontend Service**:
+- Root Directory: `frontend/`
+- Port: 80 (auto-detected)  
+- Environment: `BACKEND_URL=http://starwars-backend.railway.internal:8080`
+- Public URL: `https://starwars-frontend-production.up.railway.app`
+
+### Railway Features Used
+
+- **Private Networking**: Secure internal communication between services
+- **Automatic SSL**: HTTPS certificates for public URLs
+- **Health Checks**: Built-in monitoring and restart policies
+- **Zero Downtime**: Rolling deployments with health validation
+- **Auto Scaling**: Automatic scaling based on traffic
 
 ## Docker Configuration
 
@@ -186,7 +227,7 @@ docker-compose logs frontend
 
 ## CI/CD Pipeline
 
-The project includes a complete CI/CD pipeline using GitHub Actions:
+The project includes a complete CI/CD pipeline using GitHub Actions and Railway deployment:
 
 ### Continuous Integration
 - **Automated testing** for both frontend and backend
@@ -195,21 +236,34 @@ The project includes a complete CI/CD pipeline using GitHub Actions:
 - **Docker image building** and caching
 
 ### Continuous Deployment
-- **Automatic deployment** to Railway on main branch
-- **Staging environment** on develop branch
+- **Automatic deployment** to Railway on develop branch
 - **Container registry** using GitHub Container Registry
 - **Health check validation** before deployment
+- **Private networking** between services for optimal performance
 
 ### Pipeline Stages
-1. **Test Stage**: Run all unit tests for both services
+1. **Test Stage**: Run all unit tests for both services (30 backend tests, 7 frontend tests)
 2. **Build Stage**: Create optimized Docker images
 3. **Security Stage**: Scan for vulnerabilities
 4. **Deploy Stage**: Deploy to Railway with zero downtime
 
+### Railway Deployment
+The application uses Railway's advanced deployment features:
+
+- **Private Networking**: Internal service communication via `starwars-backend.railway.internal:8080`
+- **Public URLs**: External access via Railway-generated domains
+- **Automatic SSL**: HTTPS certificates managed by Railway
+- **Health Monitoring**: Built-in health checks and monitoring
+- **Scaling**: Automatic scaling based on demand
+
+### Deployment Options
+1. **Docker Compose Import**: Upload `railway-compose.yml` to Railway dashboard
+2. **Individual Services**: Deploy backend and frontend as separate Railway services
+3. **GitHub Integration**: Automatic deployment on code push
+
 ### Environments
-- **Production**: `main` branch → Railway Production
-- **Staging**: `develop` branch → Railway Staging
-- **Feature branches**: Run tests only
+- **Production**: `develop` branch → Railway Production
+- **Local Development**: Docker Compose for local testing
 
 ## Contributing
 

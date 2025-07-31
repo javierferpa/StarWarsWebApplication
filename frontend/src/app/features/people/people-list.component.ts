@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PeopleService }      from '../../core/services/people.service';
 import { Person }            from '../../core/models/people.model';
 import { PageDto }           from '../../core/models/page.model';
+import { CommonModule }      from '@angular/common';
 import {MatCard} from '@angular/material/card';
 import {MatToolbar} from '@angular/material/toolbar';
 import {SearchBarComponent} from '../../shared/search-bar/search-bar.component';
@@ -13,6 +14,7 @@ import {MatProgressSpinner} from '@angular/material/progress-spinner';
   selector: 'sw-people-list',
   templateUrl: './people-list.component.html',
   imports: [
+    CommonModule,
     MatCard,
     MatToolbar,
     SearchBarComponent,

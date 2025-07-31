@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PlanetsService }     from '../../core/services/planets.service';
 import { Planet }             from '../../core/models/planet.model';
 import { PageDto }            from '../../core/models/page.model';
+import { CommonModule }       from '@angular/common';
 import {MatCard} from '@angular/material/card';
 import {MatToolbar} from '@angular/material/toolbar';
 import {SearchBarComponent} from '../../shared/search-bar/search-bar.component';
@@ -14,6 +15,7 @@ import { DecimalPipe } from '@angular/common';
   selector: 'sw-planet-list',
   templateUrl: './planet-list.component.html',
   imports: [
+    CommonModule,
     MatCard,
     MatToolbar,
     SearchBarComponent,

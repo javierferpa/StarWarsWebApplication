@@ -5,9 +5,9 @@ FROM eclipse-temurin:17-jdk-alpine AS builder
 WORKDIR /app
 
 # Copy Maven wrapper and pom.xml for dependency resolution
-COPY BackEnd/mvnw* ./
-COPY BackEnd/.mvn .mvn
-COPY BackEnd/pom.xml ./
+COPY mvnw* ./
+COPY .mvn .mvn
+COPY pom.xml ./
 
 # Fix permissions for Maven wrapper
 RUN chmod +x ./mvnw
@@ -16,7 +16,7 @@ RUN chmod +x ./mvnw
 RUN ./mvnw dependency:resolve
 
 # Copy source code and build application
-COPY BackEnd/src ./src
+COPY src ./src
 RUN ./mvnw clean package -DskipTests
 
 # Runtime stage - lightweight JRE image

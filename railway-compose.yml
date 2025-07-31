@@ -23,6 +23,7 @@ services:
     depends_on:
       - starwars-backend
     environment:
-      - BACKEND_URL=http://starwars-backend.railway.internal:8080
+      - BACKEND_URL=https://starwars-backend-production.up.railway.app
+      - RAILWAY_ENVIRONMENT=production
     ports:
       - "80:80"

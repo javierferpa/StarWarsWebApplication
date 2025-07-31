@@ -60,9 +60,15 @@ export class PlanetListComponent implements OnInit {
   }
 
   onSort(e: { active:string; direction:string }) {
-    if (!e.direction) return;
-    this.query.sort = e.active;
-    this.query.dir  = e.direction as 'asc'|'desc';
+    if (!e.direction) {
+      // Reset to default sorting when no direction (third click)
+      this.query.sort = 'name';
+      this.query.dir = 'asc';
+    } else {
+      this.query.sort = e.active;
+      this.query.dir = e.direction as 'asc'|'desc';
+    }
+    this.query.page = 0; // Reset to first page when sorting changes
     this.load();
   }
 

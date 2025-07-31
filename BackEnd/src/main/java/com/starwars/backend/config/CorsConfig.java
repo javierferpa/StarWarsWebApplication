@@ -14,8 +14,12 @@ public class CorsConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration cfg = new CorsConfiguration();
-        cfg.setAllowedOrigins(List.of("http://localhost:4200")); // Angular dev
-        cfg.setAllowedMethods(List.of("GET"));
+        cfg.setAllowedOrigins(List.of(
+            "http://localhost:4200", // Angular dev
+            "http://localhost:6969", // Docker frontend
+            "http://localhost:80"    // Alternative docker setup
+        )); 
+        cfg.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         cfg.setAllowedHeaders(List.of("*"));
         cfg.setAllowCredentials(false);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

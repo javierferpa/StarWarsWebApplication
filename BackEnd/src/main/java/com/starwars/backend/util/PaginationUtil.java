@@ -6,10 +6,9 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 /**
- * Utility for paginating any list into a PageDto.
- * I keep this static & final so it's easy to call from anywhere without state.
- * I use zero-based page indexing (page=0 means "first page").
- * It's generic so it can paginate lists of People, Planets, or anything else.
+ * Utility class for paginating lists into PageDto objects.
+ * Uses zero-based page indexing where page=0 represents the first page.
+ * Generic implementation works with any data type for flexible reuse.
  */
 @RequiredArgsConstructor
 public final class PaginationUtil {

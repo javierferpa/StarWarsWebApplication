@@ -32,7 +32,7 @@ import {MatProgressSpinner} from '@angular/material/progress-spinner';
 export class PeopleListComponent implements OnInit {
 
   displayed = ['name','height','mass','gender','created'];
-  sortable = ['name','height','mass', 'created'];
+  sortable = ['name','height','mass','gender', 'created'];
   data: Person[] = [];
   total = 0;
 
@@ -61,10 +61,14 @@ export class PeopleListComponent implements OnInit {
 
   onSort(e: { active:string; direction:string }) {
     if (!e.direction) {
-      return;
+      // Reset to default sorting when no direction (third click)
+      this.query.sort = 'name';
+      this.query.dir = 'asc';
+    } else {
+      this.query.sort = e.active;
+      this.query.dir = e.direction as 'asc'|'desc';
     }
-    this.query.sort = e.active;
-    this.query.dir = e.direction as 'asc'|'desc';
+    this.query.page = 0; // Reset to first page when sorting changes
     this.load();
   }
 

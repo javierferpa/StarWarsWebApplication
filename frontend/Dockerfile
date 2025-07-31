@@ -1,12 +1,13 @@
 # build stage
-FROM node:18-alpine AS build
+FROM node:22-alpine AS build
 WORKDIR /src
+COPY package*.json ./
+RUN npm ci
 COPY . .
-RUN npm ci && npm run build --prod
+RUN npm run build
 
 # runtime stage
 FROM nginx:alpine
-COPY --from=build /src/dist /usr/share/nginx/html
-# pass backend url to the app (optional replace-at-runtime script pattern)
-ENV API_URL=http://backend:8080
+COPY --from=build /src/dist/frontend/browser /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80

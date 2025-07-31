@@ -6,9 +6,9 @@ import org.springframework.stereotype.Component;
 import java.util.Comparator;
 
 /**
- * SortStrategy for the "height" field.
- * - Handles string values like "unknown" by treating them as zero.
- * - Keeps things safe and robust, so if SWAPI data changes format, the UI doesn't crash.
+ * Sorting strategy for height field values.
+ * Handles non-numeric values like "unknown" by defaulting to zero.
+ * Provides robust parsing to prevent UI crashes from unexpected data formats.
  */
 @Slf4j
 @Component
@@ -28,22 +28,31 @@ public class HeightSort implements SortStrategy<HasHeight> {
 
     @Override
     public Comparator<HasHeight> comparator() {
-        // Main comparator: safely parses height as int, using 0 as fallback for any errors.
+        // Safely parse height values, using zero for any non-numeric data
         return Comparator.comparing(
                 h -> parseOrZero(h.getHeight())
         );
     }
 
     /**
-     * Helper to parse height as int.
-     * - Returns 0 for "unknown", null, or any parse errors.
-     * - I keep it forgiving on purpose, since SWAPI sometimes uses non-numeric values.
+     * Parses height string to integer with error handling.
+     * Returns zero for "unknown", null, or invalid numeric values.
+     * Handles comma-separated thousands for consistency with mass parsing.
+     * Designed to be forgiving since SWAPI data may contain non-numeric entries.
      */
     private static int parseOrZero(String raw) {
+        if (raw == null || raw.isBlank()) return 0;
+        
+        String cleaned = raw.trim();
+        if ("unknown".equalsIgnoreCase(cleaned)) return 0;
+        
+        // Remove commas from thousands separator for consistency
+        cleaned = cleaned.replace(",", "");
+        
         try {
-            return Integer.parseInt(raw);
+            return Integer.parseInt(cleaned);
         } catch (Exception e) {
-            log.debug("Could not parse height '{}', defaulting to 0", raw);
+            log.debug("Invalid height value '{}', using 0", raw);
             return 0;
         }
     }

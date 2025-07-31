@@ -7,9 +7,9 @@ import java.util.Comparator;
 import java.util.Optional;
 
 /**
- * SortStrategy for the "population" field.
- * - Null values are treated as zero, so missing/unknown populations are always sorted to the bottom/top depending on order.
- * - I keep this forgiving since the upstream data sometimes uses 'unknown' or missing values.
+ * Sorting strategy for population field values.
+ * Handles null values by treating them as zero for consistent ordering.
+ * Designed to be forgiving since upstream data may contain "unknown" or missing values.
  */
 @Slf4j
 @Component

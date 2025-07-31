@@ -30,8 +30,8 @@ public class CreatedSort implements SortStrategy<HasCreated> {
 
     @Override
     public Comparator<HasCreated> comparator() {
-        // Main comparator: sorts by created (nulls come first, for consistency).
-        // Comparator.nullsFirst: guarantees no NPEs and sensible order even if upstream data is messy.
+        // Sort by creation date with null values placed first for consistency
+        // Null-safe comparison prevents NPE and handles incomplete upstream data
         return Comparator.comparing(
                 HasCreated::getCreated,
                 Comparator.nullsFirst(Comparator.naturalOrder())

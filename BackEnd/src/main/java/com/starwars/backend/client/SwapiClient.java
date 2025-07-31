@@ -19,12 +19,9 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
- * Thin, resilient client around the swapi.info mirror.
- * My approach here:
- * - I first try the paginated endpoints and keep following 'next' until it returns null.
- * - If paged decoding fails (e.g., flat array returned), I fall back to a non-paged endpoint.
- * - This client is generic so I can reuse the paging logic for both People and Planets.
- * - I include logging at key points so I can trace production issues and easily explain design choices.
+ * HTTP client for Star Wars API integration.
+ * Handles paginated responses with fallback to flat array endpoints when needed.
+ * Supports both People and Planets resources with consistent error handling.
  */
 @Slf4j
 @Service
@@ -41,9 +38,9 @@ public class SwapiClient {
 
     // ---------- PEOPLE ----------
 
-    /** Fetch a single paginated page of People. */
+    /** Fetch a single paginated page of People */
     public Mono<SwapiPagedResponse<PeopleDto>> fetchPeoplePage(int page, String search) {
-        log.debug("Fetching People page={} search='{}'", page, search);
+        log.debug("Fetching people page: {} (search: '{}')", page, search);
         return swapiWebClient
                 .get()
                 .uri(uri -> uri.path("/people/")
@@ -55,12 +52,12 @@ public class SwapiClient {
     }
 
     /**
-     * Follow the next URL returned by SWAPI pagination.
-     * I normalize it so that if the baseUrl already contains `/api`, I don't end up with `/api/api/...`.
+     * Follow pagination URL for People resources
+     * Normalizes URL to prevent duplicate /api/ path segments
      */
     public Mono<SwapiPagedResponse<PeopleDto>> fetchPeopleByAbsoluteUrl(String nextUrl) {
         String normalized = normalizeNext(nextUrl);
-        log.debug("Fetching People by nextURL='{}' (normalized='{}')", nextUrl, normalized);
+        log.debug("Following people pagination: '{}' -> '{}'", nextUrl, normalized);
         return swapiWebClient
                 .get()
                 .uri(normalized)
@@ -69,12 +66,11 @@ public class SwapiClient {
     }
 
     /**
-     * Fetch all People:
-     * - Start at page 1, keep following 'next' until null
-     * - If paged endpoint fails, try fallback
+     * Retrieve all People records using pagination
+     * Falls back to flat array endpoint if pagination fails
      */
     public Mono<List<PeopleDto>> fetchAllPeople(String search) {
-        log.info("Fetching ALL People (search='{}')", search);
+        log.info("Fetching all people data (search: '{}')", search);
         return fetchAll(
                 search,
                 page -> fetchPeoplePage(page, search),
@@ -84,20 +80,20 @@ public class SwapiClient {
     }
 
     /**
-     * Fallback for People if the endpoint returns a flat array (no pagination).
-     * Local filter by name for consistency.
+     * Fallback endpoint for People when pagination is not available
+     * Performs client-side filtering by name
      */
     private Mono<List<PeopleDto>> fetchPeopleArrayFallback(String search) {
-        log.warn("Falling back to flat People array (search='{}')", search);
+        log.warn("Using fallback endpoint for people (search: '{}')", search);
         return swapiWebClient
                 .get()
                 .uri(uri -> uri.path("/people/").build())
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<List<PeopleDto>>() {})
                 .map(list -> filterByName(list, search, PeopleDto::getName))
-                .doOnSuccess(list -> log.info("People fallback returned {} items (search='{}')", list.size(), search))
+                .doOnSuccess(list -> log.info("Fallback endpoint returned {} people (search: '{}')", list.size(), search))
                 .onErrorResume(WebClientResponseException.class, ex -> {
-                    log.error("People fallback failed: status={} body={}",
+                    log.error("People fallback failed - status: {}, response: {}",
                             ex.getStatusCode(), ex.getResponseBodyAsString(), ex);
                     return Mono.just(List.of());
                 });
@@ -105,9 +101,9 @@ public class SwapiClient {
 
     // ---------- PLANETS ----------
 
-    /** Fetch a single paginated page of Planets. */
+    /** Fetch a single paginated page of Planets */
     public Mono<SwapiPagedResponse<PlanetDto>> fetchPlanetsPage(int page, String search) {
-        log.debug("Fetching Planets page={} search='{}'", page, search);
+        log.debug("Fetching planets page: {} (search: '{}')", page, search);
         return swapiWebClient
                 .get()
                 .uri(uri -> uri.path("/planets/")
@@ -118,10 +114,10 @@ public class SwapiClient {
                 .bodyToMono(new ParameterizedTypeReference<SwapiPagedResponse<PlanetDto>>() {});
     }
 
-    /** Follow the next URL for Planets pagination (same normalization as People). */
+    /** Follow pagination URL for Planets resources */
     public Mono<SwapiPagedResponse<PlanetDto>> fetchPlanetsByAbsoluteUrl(String nextUrl) {
         String normalized = normalizeNext(nextUrl);
-        log.debug("Fetching Planets by nextURL='{}' (normalized='{}')", nextUrl, normalized);
+        log.debug("Following planets pagination: '{}' -> '{}'", nextUrl, normalized);
         return swapiWebClient
                 .get()
                 .uri(normalized)
@@ -129,9 +125,9 @@ public class SwapiClient {
                 .bodyToMono(new ParameterizedTypeReference<SwapiPagedResponse<PlanetDto>>() {});
     }
 
-    /** Fetch all Planets (paginated or fallback, just like People). */
+    /** Retrieve all Planets records using pagination with fallback support */
     public Mono<List<PlanetDto>> fetchAllPlanets(String search) {
-        log.info("Fetching ALL Planets (search='{}')", search);
+        log.info("Fetching all planets data (search: '{}')", search);
         return fetchAll(
                 search,
                 page -> fetchPlanetsPage(page, search),
@@ -140,18 +136,18 @@ public class SwapiClient {
         );
     }
 
-    /** Fallback for Planets if endpoint returns a flat array. */
+    /** Fallback endpoint for Planets when pagination is not available */
     private Mono<List<PlanetDto>> fetchPlanetsArrayFallback(String search) {
-        log.warn("Falling back to flat Planets array (search='{}')", search);
+        log.warn("Using fallback endpoint for planets (search: '{}')", search);
         return swapiWebClient
                 .get()
                 .uri(uri -> uri.path("/planets/").build())
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<List<PlanetDto>>() {})
                 .map(list -> filterByName(list, search, PlanetDto::getName))
-                .doOnSuccess(list -> log.info("Planets fallback returned {} items (search='{}')", list.size(), search))
+                .doOnSuccess(list -> log.info("Fallback endpoint returned {} planets (search: '{}')", list.size(), search))
                 .onErrorResume(WebClientResponseException.class, ex -> {
-                    log.error("Planets fallback failed: status={} body={}",
+                    log.error("Planets fallback failed - status: {}, response: {}",
                             ex.getStatusCode(), ex.getResponseBodyAsString(), ex);
                     return Mono.just(List.of());
                 });
@@ -160,12 +156,9 @@ public class SwapiClient {
     // ---------- GENERIC PAGINATION ROUTINE ----------
 
     /**
-     * Core pagination logic for both People and Planets:
-     * - Start with page 1 (or custom fetcher)
-     * - expand() keeps following 'next' until it's null
-     * - MAX_PAGES is a hard safety cap
-     * - If anything fails (decoding, HTTP), I try the fallback supplier
-     * Logging at each key step, so I can debug production issues and answer questions in an interview.
+     * Generic pagination handler for SWAPI resources
+     * Follows 'next' links until exhausted with safety limits
+     * Falls back to flat array endpoint on pagination failures
      */
     private <T> Mono<List<T>> fetchAll(String search,
                                        Function<Integer, Mono<SwapiPagedResponse<T>>> firstPageFetcher,
@@ -173,29 +166,28 @@ public class SwapiClient {
                                        Supplier<Mono<List<T>>> flatArrayFallback) {
 
         return firstPageFetcher.apply(1)
-                .doOnNext(resp -> log.debug("Fetched page 1: items={}, next={}", safeSize(resp), resp.getNext()))
+                .doOnNext(resp -> log.debug("Retrieved page 1: {} items, next: {}", safeSize(resp), resp.getNext()))
                 .expand(resp -> {
                     String next = resp.getNext();
                     if (next == null) {
-                        log.debug("No more pages. Pagination finished.");
+                        log.debug("Pagination complete");
                         return Mono.empty();
                     }
                     String normalized = normalizeNext(next);
-                    log.debug("Following next='{}' (normalized='{}')", next, normalized);
+                    log.debug("Fetching next page: '{}' -> '{}'", next, normalized);
                     return byUrlFetcher.apply(normalized)
-                            .doOnNext(r -> log.debug("Fetched next page: items={}, next={}", safeSize(r), r.getNext()));
+                            .doOnNext(r -> log.debug("Retrieved page: {} items, next: {}", safeSize(r), r.getNext()));
                 })
                 .take(MAX_PAGES)
                 .flatMapIterable(SwapiPagedResponse::getResults)
                 .collectList()
-                .doOnSuccess(list -> log.info("Fetched {} items from paginated endpoint (search='{}')", list.size(), search))
+                .doOnSuccess(list -> log.info("Pagination complete - {} total records (search: '{}')", list.size(), search))
                 .onErrorResume(ex -> {
-                    // If paginated fetch fails, fallback to flat array endpoint for max robustness
                     if (isPagedFormatProblem(ex)) {
-                        log.warn("Paged fetch failed, switching to flat-array fallback. Cause: {}", ex.toString());
+                        log.warn("Pagination failed, trying fallback - reason: {}", ex.toString());
                         return flatArrayFallback.get();
                     }
-                    log.error("Unexpected error while fetching paginated data", ex);
+                    log.error("Unexpected pagination error", ex);
                     return Mono.error(ex);
                 })
                 .timeout(DEFAULT_TIMEOUT);
@@ -204,9 +196,8 @@ public class SwapiClient {
     // ---------- HELPERS ----------
 
     /**
-     * Normalize 'next' URLs returned by the SWAPI.
-     * - If absolute, return as is
-     * - If starts with '/api/', trim so it doesn't duplicate '/api' (my baseUrl already ends with /api)
+     * Normalize pagination URLs from SWAPI responses
+     * Prevents duplicate /api/ path segments in URLs
      */
     private static String normalizeNext(String next) {
         if (next == null) return null;
@@ -224,8 +215,8 @@ public class SwapiClient {
     }
 
     /**
-     * Decides if the error means the paged shape is missing or broken, in which case fallback makes sense.
-     * I purposely treat decoding issues as fallback triggers, since users want *something* rather than nothing.
+     * Decides if the error indicates pagination format issues where fallback is appropriate.
+     * Treats decoding issues as fallback triggers to ensure users receive data when possible.
      */
     private static boolean isPagedFormatProblem(Throwable ex) {
         if (ex instanceof WebClientResponseException wce) {
@@ -236,8 +227,8 @@ public class SwapiClient {
     }
 
     /**
-     * Simple in-memory filtering by name.
-     * I pass in the extractor function so it works for both People and Planets without forcing an interface.
+     * Generic name filtering utility for different entity types.
+     * Uses function parameter to extract name field from any object type.
      */
     private static <T> List<T> filterByName(List<T> list, String search, java.util.function.Function<T, String> nameExtractor) {
         if (search == null || search.isBlank()) return list;

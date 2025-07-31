@@ -7,8 +7,8 @@ import java.util.Comparator;
 
 /**
  * SortStrategy for the "name" field.
- * - Universal alphabetical sort, case-insensitive, and robust to nulls.
- * - This is my default fallback for almost all resources.
+ * Universal alphabetical sort, case-insensitive and null-safe.
+ * Default fallback strategy for most resources.
  */
 @Slf4j
 @Component
@@ -28,8 +28,7 @@ public class NameSort implements SortStrategy<HasName> {
 
     @Override
     public Comparator<HasName> comparator() {
-        // Sorts alphabetically, ignoring case. Null names come first.
-        // This way, unexpected/missing names don't cause weird ordering or NPEs.
+        // Alphabetical sort, case-insensitive with null values first.
         return Comparator.comparing(
                 HasName::getName,
                 Comparator.nullsFirst(String.CASE_INSENSITIVE_ORDER)

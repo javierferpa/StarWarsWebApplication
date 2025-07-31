@@ -18,15 +18,15 @@ public class WebClientConfig {
     @Bean
     public WebClient swapiWebClient(WebClient.Builder builder) {
         // Custom ExchangeStrategies: by default, WebClient limits response body to 256KB.
-        // Some SWAPI endpoints can be quite big, so I set this to 16MB just to be safe.
+        // SWAPI endpoints can return large datasets, so setting to 16MB for safety.
         ExchangeStrategies exchangeStrategies = ExchangeStrategies.builder()
                 .codecs(configurer ->
                         configurer.defaultCodecs().maxInMemorySize(16 * 1024 * 1024)
                 )
                 .build();
 
-        // I always use JSON, so I set the Accept header globally here.
-        // The base URL ensures all requests are relative ("/people", "/planets", etc).
+        // Configure JSON Accept header globally for all requests.
+        // Base URL enables relative paths ("/people", "/planets", etc).
         return builder
                 .baseUrl("https://swapi.info/api")
                 .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)

@@ -8,12 +8,10 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Central point for sorting logic in the backend.
- * My design here:
- * - The engine receives a list of registered SortStrategies at startup (injected by Spring).
- * - For every sort request, it tries to find a strategy matching both the requested field and the DTO type.
- * - If the field isn't recognized, we keep original order (comparator returns 0).
- * This allows me to plug in new sort strategies (by field or type) without touching this core class.
+ * Central sorting engine for backend data processing.
+ * Uses strategy pattern with registered SortStrategy implementations.
+ * Finds appropriate strategy based on field name and DTO type compatibility.
+ * Falls back to original order when no matching strategy is found.
  */
 @Slf4j
 @Service
@@ -43,11 +41,11 @@ public class SortEngine {
         Comparator<T> comp;
         if (strategy != null) {
             comp = strategy.comparator();
-            log.debug("Sorting {} items by '{}' using [{}], direction={}",
+            log.debug("Sorting {} items by '{}' using {}, direction={}",
                     data.size(), field, strategy.getClass().getSimpleName(), asc ? "ASC" : "DESC");
         } else {
             // No recognized strategy: keep original order.
-            log.warn("Unknown sort field '{}' for type {}: keeping original order.", field, type.getSimpleName());
+            log.warn("Unknown sort field '{}' for type {}, keeping original order", field, type.getSimpleName());
             comp = (a, b) -> 0;
         }
 

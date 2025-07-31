@@ -22,7 +22,7 @@ public class CacheConfig {
 
     @Bean
     public Caffeine<Object, Object> caffeineConfig() {
-        // Note: Caffeine's builder is immutable, so we create it once and share it below.
+        // Caffeine builder is immutable - create once and share across instances.
         return Caffeine.newBuilder()
                 .expireAfterWrite(Duration.ofMinutes(10))
                 .maximumSize(1000);

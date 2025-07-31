@@ -70,6 +70,11 @@ export class DataTableComponent<T>
     // so we don't assign the paginator or sort to the dataSource directly.
     // We only need to synchronize the paginator's label.
     this._syncPaginator();
+    
+    // Configure the sort to allow clearing (3-state cycle: asc -> desc -> no sort)
+    if (this.sort) {
+      this.sort.disableClear = false;
+    }
   }
 
   ngOnChanges(ch: SimpleChanges): void {
@@ -91,5 +96,34 @@ export class DataTableComponent<T>
   }
 
   onPage(e: PageEvent) { this.pageChange.emit(e); }
-  onSort(e: Sort)      { this.sortChange.emit(e); }
+  onSort(e: Sort) { 
+    // Emit the sort event even if it's cleared (active = '', direction = '')
+    this.sortChange.emit(e); 
+  }
+
+  /**
+   * Gets the display value for a cell, handling null/undefined values appropriately.
+   * @param value The raw value from the data
+   * @param columnName The name of the column (for context-specific formatting)
+   * @returns The formatted display value
+   */
+  getDisplayValue(value: any, columnName: string): string {
+    // Handle null, undefined, or empty string values
+    if (value === null || value === undefined || value === '') {
+      // For population, height, and mass columns, show "Unknown"
+      if (columnName === 'population' || columnName === 'height' || columnName === 'mass') {
+        return 'Unknown';
+      }
+      // For other columns, show a dash to indicate no data
+      return '—';
+    }
+    
+    // Handle "unknown" string values from the API
+    if (typeof value === 'string' && value.toLowerCase() === 'unknown') {
+      return 'Unknown';
+    }
+    
+    // Return the value as string (including numeric zero which is a valid value)
+    return String(value);
+  }
 }

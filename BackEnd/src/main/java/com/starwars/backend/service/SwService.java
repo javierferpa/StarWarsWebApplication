@@ -12,12 +12,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * This service acts as a thin façade between controllers and the cache + sorting layer.
- * My goal with this class:
- * - Keep business logic here as flat as possible (only coordination, no sorting details).
- * - Enforce consistent defaults for sorting (always fall back to "name" ASC if sort not provided).
- * - Make it easy to add resource-specific tweaks later, since all logic goes through this service.
- * The controller never talks to SortEngine or the cache directly—only through here.
+ * Service layer facade for Star Wars data operations.
+ * Coordinates between cache service and sorting engine while enforcing consistent defaults.
+ * Handles request logging and response formatting for both People and Planets endpoints.
  */
 @Slf4j
 @Service
@@ -30,20 +27,20 @@ public class SwService {
     // ---------------- PEOPLE ----------------
 
     /**
-     * Returns one page of People.
-     * I always log the request params for observability.
-     * If no sort field is provided, I default to "name" ASC.
+     * Returns paginated People data with optional search and sorting.
+     * Logs request parameters for observability and debugging.
+     * Defaults to name-based ascending sort when no sort field is specified.
      */
     public PageDto<PeopleDto> getPeople(int page, int size, String search, String sort, String dir) {
-        log.info("getPeople(page={}, size={}, search='{}', sort='{}', dir='{}')",
+        log.info("Request: getPeople(page={}, size={}, search='{}', sort='{}', dir='{}')",
                 page, size, search, sort, dir);
 
         List<PeopleDto> all = cacheService.loadAllPeople(search);
-        log.debug("Loaded {} people from cache (post-search).", all.size());
+        log.debug("Loaded {} people from cache", all.size());
 
         PageDto<PeopleDto> result = fetchPage(all, PeopleDto.class, page, size, sort, dir);
 
-        log.info("getPeople -> returned {} items (total={}, page={}, size={})",
+        log.info("Response: {} items (total={}, page={}, size={})",
                 result.getItems().size(), result.getTotal(), result.getPage(), result.getSize());
         return result;
     }
@@ -51,19 +48,19 @@ public class SwService {
     // ---------------- PLANETS ----------------
 
     /**
-     * Returns one page of Planets.
-     * Same default policy: fallback to "name" ASC if no sort given.
+     * Returns paginated Planets data with optional search and sorting.
+     * Uses same default sorting policy as People: fallback to name ascending.
      */
     public PageDto<PlanetDto> getPlanets(int page, int size, String search, String sort, String dir) {
-        log.info("getPlanets(page={}, size={}, search='{}', sort='{}', dir='{}')",
+        log.info("Request: getPlanets(page={}, size={}, search='{}', sort='{}', dir='{}')",
                 page, size, search, sort, dir);
 
         List<PlanetDto> all = cacheService.loadAllPlanets(search);
-        log.debug("Loaded {} planets from cache (post-search).", all.size());
+        log.debug("Loaded {} planets from cache", all.size());
 
         PageDto<PlanetDto> result = fetchPage(all, PlanetDto.class, page, size, sort, dir);
 
-        log.info("getPlanets -> returned {} items (total={}, page={}, size={})",
+        log.info("Response: {} items (total={}, page={}, size={})",
                 result.getItems().size(), result.getTotal(), result.getPage(), result.getSize());
         return result;
     }
@@ -71,12 +68,9 @@ public class SwService {
     // ---------------- SHARED / GENERIC ----------------
 
     /**
-     * Main helper for sorting and pagination.
-     * - If sort is blank/null → default to "name".
-     * - Direction is ASC unless dir=desc.
-     * - Logs all key steps for traceability during troubleshooting.
-     * By centralizing defaults here (not in SortEngine), I keep the option open to customize per-entity
-     * if requirements change.
+     * Core sorting and pagination logic shared between People and Planets.
+     * Applies default sorting by name when no field is specified.
+     * Centralizes default behavior while maintaining flexibility for entity-specific customization.
      */
     private <T> PageDto<T> fetchPage(List<T> items,
                                      Class<T> type,
@@ -88,15 +82,15 @@ public class SwService {
         String sortField = sortBlank ? "name" : sort;
         boolean ascending = !"desc".equalsIgnoreCase(dir);
 
-        log.debug("Sorting {} items by '{}' ({}) [defaultApplied={}].",
+        log.debug("Sorting {} items by '{}' ({}) [default applied: {}]",
                 items.size(), sortField, ascending ? "ASC" : "DESC", sortBlank);
 
         List<T> sorted = sortEngine.sort(items, type, sortField, ascending);
 
         PageDto<T> pageDto = PaginationUtil.paginate(sorted, page, size);
 
-        log.debug("Pagination -> page={}, size={}, total={}, returned={}",
-                pageDto.getPage(), pageDto.getSize(), pageDto.getTotal(), pageDto.getItems().size());
+        log.debug("Paginated {} items -> page={}, size={}, total={}",
+                pageDto.getItems().size(), pageDto.getPage(), pageDto.getSize(), pageDto.getTotal());
 
         return pageDto;
     }

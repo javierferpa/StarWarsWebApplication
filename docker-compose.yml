@@ -1,8 +1,6 @@
-version: "3.9"
-
 services:
   backend:
-    build: ./backend
+    build: ./BackEnd
     container_name: sw-backend
     ports:
       - "8080:8080"
@@ -11,8 +9,9 @@ services:
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
       interval: 30s
-      timeout: 5s
+      timeout: 10s
       retries: 3
+      start_period: 40s
 
   frontend:
     build: ./frontend

@@ -22,9 +22,9 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
- * Centralised error handler for all controllers.
- * - Every error returns the *same* JSON structure so the frontend always knows what to expect.
- * - 4xx client errors are logged as warnings (warn), 5xx as errors (error + stacktrace).
+ * Global exception handler for REST controllers.
+ * Ensures consistent error response format across all endpoints.
+ * Uses appropriate log levels: warnings for 4xx errors, errors for 5xx.
  */
 @Slf4j
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -66,7 +66,7 @@ public class GlobalExceptionHandler {
         String message = String.format("Method %s is not allowed. Supported: %s.",
                 ex.getMethod(), supported);
 
-        log.warn("{} {} -> 405 {}", req.getMethod(), req.getRequestURI(), message);
+        log.warn("{} {} -> 405 Method not allowed: {}", req.getMethod(), req.getRequestURI(), message);
         return ResponseEntity.status(status).body(base(status, message, req).build());
     }
 
@@ -76,7 +76,7 @@ public class GlobalExceptionHandler {
                                                           HttpServletRequest req) {
         HttpStatus status = HttpStatus.NOT_FOUND;
         String message = firstNonBlank(ex.getMessage(), "Resource not found");
-        log.warn("{} {} -> 404 {}", req.getMethod(), req.getRequestURI(), message);
+        log.warn("{} {} -> 404 Resource not found: {}", req.getMethod(), req.getRequestURI(), message);
         return ResponseEntity.status(status).body(base(status, message, req).build());
     }
 
@@ -95,7 +95,7 @@ public class GlobalExceptionHandler {
                 ? "Validation failed"
                 : "Validation failed: " + String.join("; ", fieldMessages);
 
-        log.warn("{} {} -> 400 Validation error: {}", req.getMethod(), req.getRequestURI(), message);
+        log.warn("{} {} -> 400 Validation failed: {}", req.getMethod(), req.getRequestURI(), message);
         return ResponseEntity.status(status).body(base(status, message, req).build());
     }
 
@@ -111,7 +111,7 @@ public class GlobalExceptionHandler {
                 : "unknown";
         String message  = String.format("Parameter '%s' must be of type %s.", param, required);
 
-        log.warn("{} {} -> 400 Type mismatch: {}", req.getMethod(), req.getRequestURI(), message);
+        log.warn("{} {} -> 400 Parameter type mismatch: {}", req.getMethod(), req.getRequestURI(), message);
         return ResponseEntity.status(status).body(base(status, message, req).build());
     }
 
@@ -122,7 +122,7 @@ public class GlobalExceptionHandler {
         HttpStatus status = HttpStatus.BAD_REQUEST;
         String message = String.format("Missing required parameter '%s' of type %s.",
                 ex.getParameterName(), ex.getParameterType());
-        log.warn("{} {} -> 400 {}", req.getMethod(), req.getRequestURI(), message);
+        log.warn("{} {} -> 400 Missing parameter: {}", req.getMethod(), req.getRequestURI(), message);
         return ResponseEntity.status(status).body(base(status, message, req).build());
     }
 
@@ -131,11 +131,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleGeneric(Exception ex, HttpServletRequest req) {
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
-        // Full stacktrace is logged, but the response stays generic (never leak internals)
-        log.error("{} {} -> 500 Unexpected error: {}", req.getMethod(), req.getRequestURI(),
+        // Log full stack trace for debugging, but keep response generic
+        log.error("{} {} -> 500 Internal server error: {}", req.getMethod(), req.getRequestURI(),
                 ex.getMessage(), ex);
 
-        String message = "Unexpected error. Please try again later.";
+        String message = "Internal server error. Please try again later.";
         return ResponseEntity.status(status).body(base(status, message, req).build());
     }
 

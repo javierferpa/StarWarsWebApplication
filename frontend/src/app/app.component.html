@@ -1,0 +1,14 @@
+<mat-toolbar color="primary" class="main-toolbar">
+  <span class="title">StarWars&nbsp;DB</span>
+
+  <span class="spacer"></span>
+
+  <!-- navigation -->
+  <button mat-button routerLink="/people"  routerLinkActive="active">People</button>
+  <button mat-button routerLink="/planets" routerLinkActive="active">Planets</button>
+</mat-toolbar>
+
+<div class="app-container">
+  <!-- routed pages render here -->
+  <router-outlet></router-outlet>
+</div>

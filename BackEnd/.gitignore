@@ -1,0 +1,60 @@
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# VS Code
+.vscode/
+
+# Eclipse / STS / NetBeans
+
+# OS generated
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Test Reports
+surefire-reports/
+test-output/
+
+# Environment/Secrets
+.env
+*.env
+.env.*
+
+# Docker
+docker-compose.override.yml
+*.local.yml
+
+# Java Coverage
+jacoco.exec
+coverage/
+*.ec
+
+# SonarQube
+.sonar/
+
+# Caffeine cache files
+caffeine.cache
+
+# Misc
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

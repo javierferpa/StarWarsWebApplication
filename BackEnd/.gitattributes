@@ -1,0 +1,17 @@
+# Enforce LF for text files
+* text=auto
+
+# Mark common file types as text
+*.java   text
+*.md     text
+*.xml    text
+*.yml    text
+*.yaml   text
+*.properties text
+*.sh     text eol=lf
+
+# Optional: treat shell scripts as executable
+*.sh     eol=lf text executable
+
+# Optional: linguist overrides (for GitHub language stats)
+*.lock linguist-generated

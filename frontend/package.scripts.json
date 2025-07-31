@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "test:ci": "ng test --no-watch --no-progress --browsers=ChromeHeadless --code-coverage",
+    "lint": "ng lint",
+    "lint:fix": "ng lint --fix",
+    "build:prod": "ng build --configuration production",
+    "analyze": "ng build --stats-json && npx webpack-bundle-analyzer dist/frontend/stats.json"
+  }
+}

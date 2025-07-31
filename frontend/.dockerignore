@@ -1,0 +1,12 @@
+node_modules/
+.angular/
+.git/
+*.md
+.gitignore
+.dockerignore
+dist/
+coverage/
+.nyc_output/
+.env
+.env.local
+.env.*.local

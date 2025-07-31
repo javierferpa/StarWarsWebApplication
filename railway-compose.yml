@@ -1,0 +1,29 @@
+services:
+  starwars-backend:
+    build: 
+      context: ./BackEnd
+      dockerfile: Dockerfile
+    environment:
+      - TZ=UTC
+      - SPRING_PROFILES_ACTIVE=production
+      - SERVER_PORT=8080
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  starwars-frontend:
+    build:
+      context: ./frontend  
+      dockerfile: Dockerfile
+    depends_on:
+      - starwars-backend
+    environment:
+      - BACKEND_URL=https://starwars-backend-production.up.railway.app
+      - RAILWAY_ENVIRONMENT=production
+    ports:
+      - "80:80"

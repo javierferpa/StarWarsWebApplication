@@ -9,5 +9,12 @@ RUN npm run build
 # runtime stage
 FROM nginx:alpine
 COPY --from=build /src/dist/frontend/browser /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Copy startup script
+COPY start-nginx.sh /start-nginx.sh
+RUN chmod +x /start-nginx.sh
+
 EXPOSE 80
+
+# Use our custom startup script
+CMD ["/start-nginx.sh"]

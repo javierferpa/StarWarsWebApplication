@@ -3,11 +3,11 @@
 A full-stack web application that displays Star Wars data from the SWAPI (Star Wars API) using Angular frontend and Spring Boot backend.
 
 [![CI/CD Pipeline](https://github.com/javierferpa/StarWarsWebApplication/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/javierferpa/StarWarsWebApplication/actions/workflows/ci-cd.yml)
-[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://your-app.railway.app)
+[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://starwars-app-production.up.railway.app)
 
 ## Live Demo
-- **Application**: [https://your-app.railway.app](https://your-app.railway.app)
-- **API Documentation**: [https://your-backend.railway.app/actuator/health](https://your-backend.railway.app/actuator/health)
+- **Application**: [https://starwars-app-production.up.railway.app](https://starwars-app-production.up.railway.app)
+- **API Health Check**: [https://starwars-backend-production.up.railway.app/actuator/health](https://starwars-backend-production.up.railway.app/actuator/health)
 
 ## Features
 
@@ -183,6 +183,33 @@ docker-compose logs frontend
 - Backend logs show detailed API interaction and caching behavior
 - Frontend errors appear in browser console and Docker logs
 - Health checks ensure proper service startup ordering
+
+## CI/CD Pipeline
+
+The project includes a complete CI/CD pipeline using GitHub Actions:
+
+### Continuous Integration
+- **Automated testing** for both frontend and backend
+- **Code quality checks** and linting
+- **Security scanning** with Trivy
+- **Docker image building** and caching
+
+### Continuous Deployment
+- **Automatic deployment** to Railway on main branch
+- **Staging environment** on develop branch
+- **Container registry** using GitHub Container Registry
+- **Health check validation** before deployment
+
+### Pipeline Stages
+1. **Test Stage**: Run all unit tests for both services
+2. **Build Stage**: Create optimized Docker images
+3. **Security Stage**: Scan for vulnerabilities
+4. **Deploy Stage**: Deploy to Railway with zero downtime
+
+### Environments
+- **Production**: `main` branch → Railway Production
+- **Staging**: `develop` branch → Railway Staging
+- **Feature branches**: Run tests only
 
 ## Contributing
 

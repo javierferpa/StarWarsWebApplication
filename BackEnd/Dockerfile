@@ -9,6 +9,9 @@ COPY mvnw* ./
 COPY .mvn .mvn
 COPY pom.xml ./
 
+# Fix permissions for Maven wrapper
+RUN chmod +x ./mvnw
+
 # Download dependencies (cached if pom.xml unchanged)
 RUN ./mvnw dependency:resolve
 

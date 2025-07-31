@@ -1,7 +1,16 @@
 #!/bin/sh
 
-# Default backend URL for local development
-BACKEND_URL=${BACKEND_URL:-"http://backend:8080"}
+# For Railway deployment, use the backend service URL
+# For local development, use the default backend URL
+if [ -n "$RAILWAY_ENVIRONMENT" ]; then
+    # Railway environment - use the backend service URL
+    BACKEND_URL=${BACKEND_URL:-"https://starwars-backend-production.up.railway.app"}
+else
+    # Local development
+    BACKEND_URL=${BACKEND_URL:-"http://backend:8080"}
+fi
+
+echo "Using backend URL: $BACKEND_URL"
 
 # Create nginx config with the correct backend URL
 cat > /etc/nginx/conf.d/default.conf << EOF

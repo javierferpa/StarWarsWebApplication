@@ -10,7 +10,7 @@ export class ApiService {
   private readonly http = inject(HttpClient);
   private readonly base = (environment as Environment).apiBaseUrl;
 
-  /** GET /api/{resource} con parámetros de paginación/búsqueda */
+  /** GET /api/{resource} with pagination/search parameters */
   getPage<T>(
     resource: 'people' | 'planets',
     params: { page: number; size: number; sort: string; dir: 'asc' | 'desc'; search?: string }

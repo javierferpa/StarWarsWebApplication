@@ -18,13 +18,11 @@ public class CreatedSort implements SortStrategy<HasCreated> {
 
     @Override
     public String field() {
-        // This strategy is triggered by sort=created.
         return "created";
     }
 
     @Override
     public boolean supports(Class<?> type) {
-        // Works for any DTO that exposes a created timestamp.
         return HasCreated.class.isAssignableFrom(type);
     }
 

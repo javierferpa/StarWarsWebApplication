@@ -16,13 +16,11 @@ public class MassSort implements SortStrategy<HasMass> {
 
     @Override
     public String field() {
-        // This strategy is only triggered for sort=mass.
         return "mass";
     }
 
     @Override
     public boolean supports(Class<?> type) {
-        // This sort applies to any class that exposes mass (e.g., PeopleDto).
         return HasMass.class.isAssignableFrom(type);
     }
 

@@ -16,13 +16,11 @@ public class GenderSort implements SortStrategy<HasGender> {
 
     @Override
     public String field() {
-        // Used when the client requests sort=gender.
         return "gender";
     }
 
     @Override
     public boolean supports(Class<?> type) {
-        // Applies to anything with a getGender() method (e.g., PeopleDto).
         return HasGender.class.isAssignableFrom(type);
     }
 

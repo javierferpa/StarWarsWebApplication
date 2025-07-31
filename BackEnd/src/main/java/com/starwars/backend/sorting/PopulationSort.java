@@ -17,13 +17,11 @@ public class PopulationSort implements SortStrategy<HasPopulation> {
 
     @Override
     public String field() {
-        // Used when the client requests sort=population.
         return "population";
     }
 
     @Override
     public boolean supports(Class<?> type) {
-        // Applies to anything with a getPopulation() method (e.g., PlanetDto).
         return HasPopulation.class.isAssignableFrom(type);
     }
 

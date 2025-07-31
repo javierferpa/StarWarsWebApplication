@@ -1,4 +1,3 @@
-/* src/app/features/planets/planet-list.component.ts */
 import { Component, OnInit } from '@angular/core';
 import { PlanetsService }     from '../../core/services/planets.service';
 import { Planet }             from '../../core/models/planet.model';
@@ -8,7 +7,6 @@ import {MatToolbar} from '@angular/material/toolbar';
 import {SearchBarComponent} from '../../shared/search-bar/search-bar.component';
 import {DataTableComponent} from '../../shared/data-table/data-table.component';
 import {MatCell, MatCellDef, MatColumnDef, MatHeaderCell, MatHeaderCellDef} from '@angular/material/table';
-import {DatePipe} from '@angular/common';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import { DecimalPipe } from '@angular/common';
 
@@ -25,7 +23,6 @@ import { DecimalPipe } from '@angular/common';
     MatHeaderCell,
     MatHeaderCellDef,
     MatCellDef,
-    DatePipe,
     MatProgressSpinner,
     DecimalPipe
   ],
@@ -61,14 +58,13 @@ export class PlanetListComponent implements OnInit {
 
   onSort(e: { active:string; direction:string }) {
     if (!e.direction) {
-      // Reset to default sorting when no direction (third click)
       this.query.sort = 'name';
       this.query.dir = 'asc';
     } else {
       this.query.sort = e.active;
       this.query.dir = e.direction as 'asc'|'desc';
     }
-    this.query.page = 0; // Reset to first page when sorting changes
+    this.query.page = 0;
     this.load();
   }
 

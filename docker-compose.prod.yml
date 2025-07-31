@@ -1,0 +1,28 @@
+services:
+  backend:
+    image: ghcr.io/javierferpa/starwarswebapplication/backend:latest
+    container_name: sw-backend-prod
+    ports:
+      - "8080:8080"
+    environment:
+      - TZ=UTC
+      - SPRING_PROFILES_ACTIVE=production
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+  frontend:
+    image: ghcr.io/javierferpa/starwarswebapplication/frontend:latest
+    container_name: sw-frontend-prod
+    depends_on:
+      backend:
+        condition: service_healthy
+    environment:
+      - API_URL=http://backend:8080
+    ports:
+      - "6969:80"
+    restart: unless-stopped

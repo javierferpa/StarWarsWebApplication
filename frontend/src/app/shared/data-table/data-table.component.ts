@@ -1,4 +1,3 @@
-/* src/app/shared/data-table/data-table.component.ts */
 import {
   AfterViewInit, Component, EventEmitter,
   Input, OnChanges, Output, SimpleChanges,
@@ -66,12 +65,8 @@ export class DataTableComponent<T>
   }
 
   ngAfterViewInit(): void {
-    // We handle pagination and sorting on the server side,
-    // so we don't assign the paginator or sort to the dataSource directly.
-    // We only need to synchronize the paginator's label.
     this._syncPaginator();
     
-    // Configure the sort to allow clearing (3-state cycle: asc -> desc -> no sort)
     if (this.sort) {
       this.sort.disableClear = false;
     }
@@ -91,13 +86,11 @@ export class DataTableComponent<T>
   private _syncPaginator() {
     this.paginator.length   = this.total;
     this.paginator.pageSize = this.pageSize;
-    // Force a redraw of the "1-15 of 82" label
     this.paginator._intl?.changes.next();
   }
 
   onPage(e: PageEvent) { this.pageChange.emit(e); }
   onSort(e: Sort) { 
-    // Emit the sort event even if it's cleared (active = '', direction = '')
     this.sortChange.emit(e); 
   }
 

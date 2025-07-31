@@ -8,8 +8,8 @@ import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 
 /**
- * Central WebClient config for accessing the SWAPI backend.
- * I separate this as a config bean to avoid duplicating WebClient setup everywhere.
+ * Central WebClient configuration for accessing the SWAPI backend.
+ * Provides a configured WebClient bean to avoid duplicating setup across services.
  * All services fetching data from swapi.info get this instance injected.
  */
 @Configuration

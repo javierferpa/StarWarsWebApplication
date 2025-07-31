@@ -1,9 +1,9 @@
-<!--search-bar.component.html-->
-<mat-form-field appearance="outline" class="search-bar">
-  <mat-label>Search</mat-label>
-  <mat-icon matPrefix>search</mat-icon>
-  <input matInput [formControl]="ctrl" placeholder="Type to filter"/>
-  <button matSuffix mat-icon-button *ngIf="ctrl.value" (click)="ctrl.setValue('')">
-    <mat-icon>close</mat-icon>
-  </button>
-</mat-form-field>
+<div class="search-bar-container">
+  <mat-form-field appearance="outline" class="search-bar">
+    <mat-icon matPrefix>search</mat-icon>
+    <input matInput [formControl]="ctrl" placeholder="Type to filter"/>
+    <button matSuffix mat-icon-button *ngIf="ctrl.value" (click)="ctrl.setValue('')" type="button">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+</div>

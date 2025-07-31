@@ -16,13 +16,11 @@ public class HeightSort implements SortStrategy<HasHeight> {
 
     @Override
     public String field() {
-        // This strategy is only triggered for sort=height.
         return "height";
     }
 
     @Override
     public boolean supports(Class<?> type) {
-        // This sort applies to any class that exposes height (e.g., PeopleDto).
         return HasHeight.class.isAssignableFrom(type);
     }
 

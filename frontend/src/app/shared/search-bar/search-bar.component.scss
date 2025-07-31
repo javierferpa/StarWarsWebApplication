@@ -1,62 +1,160 @@
 :host {
   display: block;
-  margin-bottom: 16px;
+  margin-bottom: clamp(0.75rem, 2vw, 1rem);
+
+  .search-bar-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 clamp(0.5rem, 2vw, 1rem);
+  }
 
   .search-bar {
     width: 100%;
     font-family: 'Orbitron', sans-serif;
 
     .mat-mdc-form-field-flex {
-      align-items: center;
+      align-items: center !important;
+      height: clamp(3rem, 7vw, 3.5rem) !important;
+      background: rgba(11, 20, 38, 0.8);
+      border-radius: clamp(0.375rem, 1vw, 0.5rem);
+      border: 1px solid rgba(255, 215, 0, 0.5);
+      padding: 0 clamp(0.75rem, 2vw, 1rem);
+      box-sizing: border-box;
+      display: flex !important;
+      justify-content: flex-start !important;
+    }
+
+    .mat-mdc-form-field-infix {
+      display: flex !important;
+      align-items: center !important;
+      padding: 0 !important;
+      border: none !important;
+      min-height: auto !important;
+      width: 100% !important;
     }
 
     .mat-icon {
       color: #FFD700;
-      margin-right: 8px;
+      font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: clamp(0.5rem, 1.5vw, 0.75rem);
+      flex-shrink: 0;
+
+      @media (max-width: 480px) {
+        font-size: 1.125rem;
+        margin-right: 0.5rem;
+      }
     }
 
+    // Remove all outlines
     &.mat-form-field-appearance-outline {
-      .mat-mdc-form-field-outline {
-        background: rgba(11, 20, 38, 0.8);
-        border-radius: 8px;
-        border-color: rgba(255, 215, 0, 0.5) !important;
-      }
-
+      .mat-mdc-form-field-outline,
+      .mat-mdc-form-field-outline-start,
+      .mat-mdc-form-field-outline-gap,
+      .mat-mdc-form-field-outline-end,
       .mat-mdc-form-field-outline-thick {
-        border-color: #FFD700 !important;
-        border-width: 1px !important;
+        display: none !important;
+        border: none !important;
       }
+    }
 
-      &.mat-focused .mat-mdc-form-field-outline-thick {
-        border-color: #4A9EFF !important;
-        box-shadow: 0 0 10px rgba(74, 158, 255, 0.3);
-      }
+    .mat-mdc-form-field-label-wrapper {
+      display: none !important;
     }
 
     .mat-mdc-form-field-label {
-      color: #FFD700 !important;
-      font-family: 'Orbitron', sans-serif;
-      font-weight: 500;
+      display: none !important;
     }
 
     .mat-mdc-input-element {
       color: #FFFFFF !important;
       font-family: 'Orbitron', sans-serif;
-      background: transparent;
+      background: transparent !important;
+      font-size: clamp(0.85rem, 2vw, 0.95rem);
+      padding: 0 !important;
+      margin: 0 !important;
+      border: none !important;
+      outline: none !important;
+      flex: 1 !important;
+      height: 100% !important;
+      line-height: normal !important;
+      
+      &::placeholder {
+        color: rgba(255, 215, 0, 0.8) !important;
+        font-family: 'Orbitron', sans-serif;
+        font-size: clamp(0.8rem, 1.8vw, 0.9rem);
+      }
+      outline: none !important;
+      height: auto !important;
+      line-height: 1.5;
 
       &::placeholder {
         color: rgba(255, 215, 0, 0.7) !important;
+        font-family: 'Orbitron', sans-serif;
+      }
+
+      @media (max-width: 768px) {
+        font-size: 0.875rem;
+      }
+
+      @media (max-width: 480px) {
+        font-size: 0.75rem;
       }
     }
 
     .mat-mdc-form-field-icon-suffix {
       .mat-mdc-icon-button {
         color: #FFD700 !important;
+        width: clamp(2.25rem, 6vw, 2.5rem);
+        height: clamp(2.25rem, 6vw, 2.5rem);
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border-radius: 50%;
+        transition: all 0.3s ease;
 
         &:hover {
           background-color: rgba(255, 215, 0, 0.1) !important;
           color: #4A9EFF !important;
+          transform: scale(1.1);
         }
+
+        .mat-icon {
+          font-size: clamp(1.1rem, 2.8vw, 1.35rem);
+          margin: 0 !important;
+        }
+
+        @media (max-width: 480px) {
+          width: 2rem;
+          height: 2rem;
+        }
+      }
+    }
+
+    // Focus state
+    &.mat-focused .mat-mdc-form-field-flex {
+      border-color: #4A9EFF !important;
+      box-shadow: 0 0 0.625rem rgba(74, 158, 255, 0.3);
+    }
+
+    // Disable bottom spacing
+    .mat-mdc-form-field-subscript-wrapper {
+      display: none !important;
+    }
+
+    @media (max-width: 768px) {
+      .mat-mdc-form-field-wrapper {
+        padding-bottom: 0 !important;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .mat-mdc-form-field-wrapper {
+        padding-bottom: 0 !important;
       }
     }
   }

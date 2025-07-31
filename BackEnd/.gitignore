@@ -19,7 +19,7 @@ out/
 # VS Code
 .vscode/
 
-# Eclipse / STS / NetBeans (ya tienes esto cubierto)
+# Eclipse / STS / NetBeans
 
 # OS generated
 .DS_Store
@@ -50,7 +50,7 @@ coverage/
 # SonarQube
 .sonar/
 
-# Caffeine cache (en memoria, pero si alguna vez usas persistencia)
+# Caffeine cache files
 caffeine.cache
 
 # Misc

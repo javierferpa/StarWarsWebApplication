@@ -2,6 +2,13 @@
 
 A full-stack web application that displays Star Wars data from the SWAPI (Star Wars API) using Angular frontend and Spring Boot backend.
 
+[![CI/CD Pipeline](https://github.com/javierferpa/StarWarsWebApplication/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/javierferpa/StarWarsWebApplication/actions/workflows/ci-cd.yml)
+[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://your-app.railway.app)
+
+## Live Demo
+- **Application**: [https://your-app.railway.app](https://your-app.railway.app)
+- **API Documentation**: [https://your-backend.railway.app/actuator/health](https://your-backend.railway.app/actuator/health)
+
 ## Features
 
 - **People Table**: Browse and search Star Wars characters

@@ -16,13 +16,11 @@ public class NameSort implements SortStrategy<HasName> {
 
     @Override
     public String field() {
-        // Used when the client requests sort=name (or defaults).
         return "name";
     }
 
     @Override
     public boolean supports(Class<?> type) {
-        // Applies to anything with a getName() (People, Planets, etc).
         return HasName.class.isAssignableFrom(type);
     }
 
